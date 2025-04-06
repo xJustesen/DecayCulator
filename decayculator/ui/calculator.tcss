@@ -1,0 +1,62 @@
+Screen {
+    overflow: auto;
+    align: center middle;
+    background: $background 10%;
+    color: $text;
+}
+
+#container {
+    layout: vertical;
+    width: 60%;
+    padding: 2;
+    background: $surface;
+    border: round $accent;
+    height: auto;
+    grid-gutter: 2;
+}
+
+#title {
+    content-align: center middle;
+    height: 1;
+    color: $primary;
+    text-style: bold;
+}
+
+DisplayPanel {
+    height: 6;
+    padding: 1 2;
+    border: panel $primary;
+    background: $panel;
+    content-align: left top;
+    text-style: bold;
+}
+
+ButtonGrid {
+    layout: grid;
+    grid-size: 4;
+    grid-gutter: 1 2;
+    margin: 1 2;
+    min-height: 20;
+    min-width: 26;
+    height: auto;
+}
+
+Button {
+    width: 100%;
+    height: 100%;
+    border: round $accent;
+    text-style: bold;
+    color: $text;
+    background: $background 20%;
+}
+
+Button:hover {
+    background: $primary 30%;
+    color: $background;
+    text-style: bold reverse;
+}
+
+Button:focus {
+    border: round $primary;
+    text-style: bold underline;
+}
