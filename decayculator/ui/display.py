@@ -1,5 +1,3 @@
-# ui/display_panel.py
-
 import random
 
 from rich.text import Text
@@ -7,7 +5,6 @@ from textual.reactive import reactive
 from textual.timer import Timer
 from textual.widget import Widget
 
-from decayculator.core.calculator import Calculator
 from decayculator.core.models import DecayingNumber
 
 
@@ -24,32 +21,25 @@ def _corrupt_expression(expr: str, corruption_chance: float = 0.1) -> str:
 
 class DisplayPanel(Widget):
     expression: reactive[str] = reactive("")
+    displayed_input: reactive[str] = reactive("")
     result: DecayingNumber | None = None
     refresh_timer: Timer | None = None
 
-    def __init__(self, calculator: Calculator):
-        super().__init__()
-        self.calculator = calculator
-
-    def set_expression(self, expr: str, evaluate: bool = False):
+    def set_expression(self, expr: str):
         self.expression = expr
         self.displayed_input = expr
-        try:
-            if evaluate:
-                self.result = self.calculator.evaluate(expr)
+        self.refresh()
 
-            if self.refresh_timer:
-                self.refresh_timer.stop()
+    def set_result(self, result: DecayingNumber | None):
+        self.result = result
 
-            self.refresh_timer = self.set_interval(0.5, self.refresh_display)
-            self.refresh()
-        except Exception:
-            self.result = None
-            self.displayed_input = expr
-            self.refresh()
+        if self.refresh_timer:
+            self.refresh_timer.stop()
+
+        self.refresh_timer = self.set_interval(0.5, self.refresh_display)
+        self.refresh()
 
     def refresh_display(self):
-        # update corrupted input and refresh result
         self.displayed_input = _corrupt_expression(self.expression, corruption_chance=0.1)
         self.refresh()
 

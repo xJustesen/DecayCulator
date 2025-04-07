@@ -22,7 +22,7 @@ class DecayCulatorApp(App):
     def compose(self) -> ComposeResult:
         with Vertical(id="container"):
             yield Static("🧮 DecayCalculator", id="title")
-            self.display_panel = DisplayPanel(calculator=self.calculator)
+            self.display_panel = DisplayPanel()
             yield self.display_panel
             yield ButtonGrid()
 
@@ -36,8 +36,14 @@ class DecayCulatorApp(App):
 
         if label == "=":
             # Try to evaluate
-            self.display_panel.set_expression(self.current_expression, True)
-            self.current_expression = ""
+            try:
+                result = self.calculator.evaluate(self.current_expression)
+                self.display_panel.set_expression(self.current_expression)
+                self.display_panel.set_result(result)
+                self.current_expression = ""
+            except Exception:
+                self.display_panel.set_expression("ERROR")
+                self.display_panel.set_result(None)
         elif label == "C":
             # Clear the expression
             self.current_expression = ""
